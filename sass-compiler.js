@@ -7,6 +7,8 @@ const postcssNormalize = require('postcss-normalize');
 const cssDeclarationSorter = require('css-declaration-sorter');
 const postcssSortMediaQueries = require('postcss-sort-media-queries');
 const postcssPresetEnv = require('postcss-preset-env');
+const postcssEnvFunction = require('postcss-env-function');
+const postcssReporter = require('postcss-reporter');
 const cssnano = require('cssnano');
 
 // Get current environment, defaults to `production`
@@ -25,12 +27,16 @@ const POSTCSS_PLUGINS = [
 	}),
 	cssDeclarationSorter,
 	postcssSortMediaQueries,
+	postcssEnvFunction({
+		importFrom: './env-css-variables.js',
+	}),
 	postcssPresetEnv({
 		autoprefixer: {
 			grid: 'no-autoplace',
 			flexbox: 'no-2009',
 		},
 	}),
+	postcssReporter,
 ];
 if (!IS_DEV) {
 	POSTCSS_PLUGINS.push(cssnano);
